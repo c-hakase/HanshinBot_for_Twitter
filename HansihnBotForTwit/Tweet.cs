@@ -9,7 +9,7 @@ namespace HansihnBotForTwit
 {
     class Tweet
     {
-        //Form1 frm = new Form1();
+
         Hanshin hanshin = new Hanshin();        
         /// <summary>
         /// ツイート内容
