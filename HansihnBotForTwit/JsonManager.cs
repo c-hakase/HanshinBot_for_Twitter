@@ -28,7 +28,7 @@ namespace HansihnBotForTwit
             }
             else
             {
-                throw new FileNotFoundException("Jsonファイルが存在しませんしません");
+                throw new FileNotFoundException("Jsonファイルが存在しません");
             }
 
             return obj;

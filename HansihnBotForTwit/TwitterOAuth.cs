@@ -34,8 +34,8 @@ namespace HansihnBotForTwit
         /// <summary>
         /// APIKey,APISERCRET(たぶんあとでJsonで開けるようにする
         /// </summary>
-        private static string APIKEY = "vPqLadVfLUgORovuTfOw9TQ2B";
-        private static string APISECRET = "l7up911NImoXLuFAoDLvxfc65aZxeJE9TrZM19MxVdmuj9YOZN";
+        private static string APIKEY = "";
+        private static string APISECRET = "";
 
 
 

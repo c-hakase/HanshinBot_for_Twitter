@@ -56,7 +56,7 @@ namespace HansihnBotForTwit
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void submit_Click(object sender, EventArgs e)
+        private void Submit_Click(object sender, EventArgs e)
         {
             twid = idText.Text;
             twps = passText.Text;
@@ -110,9 +110,8 @@ namespace HansihnBotForTwit
 
                 if (tokens != null) statuslabel.Text = "Successful acquisition of token!";
 
-                statusText = Tweet.Tweet_Main("Hanshin.json", tokens);
-
-                Appstatus.Text = statusText;
+                statusText = Tweet.Tweet_Main("hanshin.json", tokens);
+                logBox.Text = statusText + DateTime.Now + "\n";
                 
             }
             

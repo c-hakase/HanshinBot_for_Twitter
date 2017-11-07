@@ -37,6 +37,7 @@
             this.statuslabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.Browser = new System.Windows.Forms.WebBrowser();
             this.label1 = new System.Windows.Forms.Label();
+            this.logBox = new System.Windows.Forms.TextBox();
             this.Appstatus.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,15 +82,15 @@
             this.submit.TabIndex = 5;
             this.submit.Text = "Twitterへ接続";
             this.submit.UseVisualStyleBackColor = true;
-            this.submit.Click += new System.EventHandler(this.submit_Click);
+            this.submit.Click += new System.EventHandler(this.Submit_Click);
             // 
             // Appstatus
             // 
             this.Appstatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statuslabel});
-            this.Appstatus.Location = new System.Drawing.Point(0, 422);
+            this.Appstatus.Location = new System.Drawing.Point(0, 155);
             this.Appstatus.Name = "Appstatus";
-            this.Appstatus.Size = new System.Drawing.Size(627, 22);
+            this.Appstatus.Size = new System.Drawing.Size(710, 22);
             this.Appstatus.TabIndex = 6;
             // 
             // statuslabel
@@ -99,11 +100,12 @@
             // 
             // Browser
             // 
-            this.Browser.Location = new System.Drawing.Point(278, 41);
+            this.Browser.Location = new System.Drawing.Point(33, 152);
             this.Browser.MinimumSize = new System.Drawing.Size(20, 20);
             this.Browser.Name = "Browser";
-            this.Browser.Size = new System.Drawing.Size(337, 378);
+            this.Browser.Size = new System.Drawing.Size(337, 68);
             this.Browser.TabIndex = 7;
+            this.Browser.Visible = false;
             this.Browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.Browser_DocumentCompleted);
             // 
             // label1
@@ -116,11 +118,20 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "HakaseDiceBot for Twitter";
             // 
+            // logBox
+            // 
+            this.logBox.Location = new System.Drawing.Point(289, 46);
+            this.logBox.Multiline = true;
+            this.logBox.Name = "logBox";
+            this.logBox.Size = new System.Drawing.Size(409, 100);
+            this.logBox.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(627, 444);
+            this.ClientSize = new System.Drawing.Size(710, 177);
+            this.Controls.Add(this.logBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Appstatus);
             this.Controls.Add(this.submit);
@@ -149,6 +160,7 @@
         private System.Windows.Forms.WebBrowser Browser;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripStatusLabel statuslabel;
+        public System.Windows.Forms.TextBox logBox;
     }
 }
 

@@ -5,23 +5,25 @@ using CoreTweet.Streaming;
 using System.Text.RegularExpressions;
 
 
+
 namespace HansihnBotForTwit
 {
     class Tweet
     {
 
-        Hanshin hanshin = new Hanshin();        
+        Hanshin hanshin = new Hanshin();
+        //Form1 form = new Form1();
         /// <summary>
         /// ツイート内容
         /// </summary>
-        private static string[] dice = { "⚂", "⚃" }; // デバッグ用
-        private static string[] Maindice = { "⚀", "⚁", "⚂", "⚃", "⚄", "⚅" };
+        private static string[] subdice = { "⚂", "⚃" }; // デバッグ用
+        private static string[] dice = { "⚀", "⚁", "⚂", "⚃", "⚄", "⚅" };
         private static string hansin = "なんでや！阪神関係ないやろ！";
         private string resp = "";
 
 
-        private string filename { get; set; }
-        private static DB hdb { get; set; }
+        //private string Filename { get; set; }
+        private static DB Hdb { get; set; }
 
 
 
@@ -29,16 +31,22 @@ namespace HansihnBotForTwit
         public string Tweet_Main(string _filename, Tokens tokens)
         {
 
-            filename = _filename;
-            if (System.IO.File.Exists(filename))
+
+            string  Filename = _filename;
+            Form1 form = new Form1();
+            if (System.IO.File.Exists(Filename))
             {
-                hdb = JsonManager<DB>.Load(filename);
+                
+                Hdb = JsonManager<DB>.Load(Filename);
+                
+                form.logBox.Text = "Success File Loading \n";
             }
             else
             {
-                hdb = new DB();
+                Hdb = new DB();
                 
-                JsonManager<DB>.Write(hdb, filename);
+                JsonManager<DB>.Write(Hdb, Filename);
+                form.logBox.Text = "Success File Writing \n";
             }
 
             try
@@ -46,7 +54,7 @@ namespace HansihnBotForTwit
                 var stream = tokens.Streaming.StartStream(StreamingType.User, new StreamingParameters(replies => "all"));
 
 
-                tokens.Statuses.Update(new { status = "起動したよ" + "(" + DateTime.Now + ")" });
+                //tokens.Statuses.Update(new { status = "起動したよ" + "(" + DateTime.Now + ")" });
 
                 foreach (var message in stream)
                 {
@@ -57,7 +65,7 @@ namespace HansihnBotForTwit
                         string tweet;
                         bool flag = false;
                         var r = new Random();
-                        var _rep = "";
+                        var _user = "";
 
                         /*ここなんでか知らんけど普通に動いちゃった*/
                         //diceに反応してサイコロ返す
@@ -73,13 +81,32 @@ namespace HansihnBotForTwit
 
                         
                         tweet = "@" + status.User.ScreenName + " " + "\n";
+                        _user = status.User.ScreenName;
                         if (flag)
                         {
-                            tweetText(tweet, str, tokens, status);
+                            str = "⚂⚂-⚃";
+                            TweetText(tweet, str, tokens, status);
+                            //33-4達成者が出たとき
+                            if (str == "⚂⚂-⚃")
+                            {
+                                
+                                var times = hanshin.AddAchiever(_user, DateTime.Now);
+                                if (times == 1)
+                                {
+                                    resp = $"なんでや！阪神関係ないやろ！\nおめでとうございます！あなたは{hanshin.GetAchievers.Count}人目の33-4達成者です！";
+                                }
+                                else
+                                {
+                                    resp = $"なんでや！阪神関係ないやろ！\nおめでとうございます！あなたは{times}回目の33-4達成です！";
+                                }
+
+                                TweetText(tweet, resp, tokens, status);
+
+                            }
                             flag = false;
                         }
 
-
+                        /*
                         //33-4達成者が出たとき
                         if (str == "⚂⚂-⚃")
                         {
@@ -92,19 +119,19 @@ namespace HansihnBotForTwit
                             {
                                 resp = $"なんでや！阪神関係ないやろ！\nおめでとうございます！あなたは{times}回目の33-4達成です！";
                             }
-                            _rep = tweet + resp;
-                            tweetText(tweet, resp, tokens, status);
+                            
+                            TweetText(tweet, resp, tokens, status);
 
                         }
-
+                        */
                         //TLの33-4に反応
                         if (Regex.IsMatch(status.Text, "33-4"))
                         {
-                            tweetText(tweet, hansin, tokens, status);
+                            TweetText(tweet, hansin, tokens, status);
                         }
                         if (Regex.IsMatch(status.Text, "334"))
                         {
-                            tweetText(tweet, hansin, tokens, status);
+                            TweetText(tweet, hansin, tokens, status);
                         }
 
                         //TLのachieverに対して達成者を報告
@@ -125,7 +152,7 @@ namespace HansihnBotForTwit
                                         {
                                             resp = "まだ33-4を達成していない人のようです.";
                                         }
-                                        tweetText(tweet, resp, tokens, status);
+                                        TweetText(tweet, resp, tokens, status);
                                     }
                                     else if(command.Length == 1)
                                     {
@@ -148,13 +175,13 @@ namespace HansihnBotForTwit
                                                 resp = $"これまでの33-4達成者\n人数:{hanshin.GetAchievers.Count}人\n最後に達成した人:{lastest_user}さん\n回数{lastest.Item1}回 日時: {lastest.Item2.ToString()}\n";
                                             }
 
-                                            tweetText(tweet, resp, tokens, status);
+                                            TweetText(tweet, resp, tokens, status);
                                         }
                                     }
                                     break;
                                 default:
                                     resp = "設定されたコマンド以外にはリアクションしません。にゃーん。";
-                                    tweetText(tweet, resp, tokens, status);
+                                    TweetText(tweet, resp, tokens, status);
                                     break;
                             }
                         }
@@ -169,9 +196,9 @@ namespace HansihnBotForTwit
 
         }
 
-        public void tweetText(string _username , string tweet, Tokens tokens, Status status)
+        public void TweetText(string _username , string tweet, Tokens tokens, Status status)
         {
-            tokens.Statuses.Update(new { status = tweet, in_reply_to_status_id = status.Id });
+            tokens.Statuses.Update(new { status = _username + tweet, in_reply_to_status_id = status.Id });
         }
 
     }
